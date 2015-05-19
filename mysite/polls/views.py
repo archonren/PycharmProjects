@@ -5,7 +5,7 @@ from .import data_in,FP_tree,suggestion
 
 
 def post(url):
-    url = "http://maps.googleapis.com/maps/api/geocode/json?address=googleplex&sensor=false"
+    #url = "http://maps.googleapis.com/maps/api/geocode/json?address=googleplex&sensor=false"
     req = urllib.request.Request(url)
     response = urllib.request.urlopen(req)
     result = json.loads(response.readall().decode('utf-8'))

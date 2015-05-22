@@ -16,6 +16,7 @@ class data(object):
         self.no_match_tag = []
         self.vec_dict = {}
         self.corr_dict = {}
+
     def get_minimium_model(self):
         '''
         :return: minimium model: dict contain just the tag in the bank and corresponding 300 dim vector
@@ -41,16 +42,20 @@ class data(object):
         '''
         :return: dict that tells which tag belongs to which cluster {key: tag, value: cluster id}
         '''
-        vec = []
-        vec_key = []
-        for key in self.minimium_model.keys():
-            vec_key.append(key)
-            vec.append(self.minimium_model[key])
-        vec_array = array(vec).reshape((-1,300))
-        centers,dist = kmeans(vec_array,self.k)
-        code,distance = vq(vec_array,centers)
-        for i in range(len(code)):
-            self.vec_dict[vec_key[i]] = code[i]
+        if self.minimium_model == {}:
+            print('minimium model has not been load')
+            raise AttributeError
+        else:
+            vec = []
+            vec_key = []
+            for key in self.minimium_model.keys():
+                vec_key.append(key)
+                vec.append(self.minimium_model[key])
+            vec_array = array(vec).reshape((-1,300))
+            centers,dist = kmeans(vec_array,self.k)
+            code,distance = vq(vec_array,centers)
+            for i in range(len(code)):
+                self.vec_dict[vec_key[i]] = code[i]
 
 
     def vote(self,topn = 3):
@@ -69,7 +74,6 @@ class data(object):
             user_item_dict[key] = vote_array/sum(vote_array)
 
         for key1 in self.user_data.keys():
-            corr_max = -1
             dict = {}
             short_list = []
             for key2 in self.user_data.keys():
@@ -82,21 +86,20 @@ class data(object):
 
 
 
-def similarity():
+def example(tag_data,user_data,k,path):
     '''
     :param tag_data: tag data (array)
     :param user_data: user data (dict)
     :param k: number of cluster
     :return: dict that tells which tag belongs to which cluster {key: tag, value: cluster id}
-'''
+    '''
 
-    #sample running code
-    k=8
-    tag_data = tag_bank()
-    user_data,data_in = loadData(tag_data)
-    x = data(tag_data,user_data,k,'c:/GoogleNews.bin')
+    x = data(tag_data,user_data,k,path)
     x.get_minimium_model()
     x.clustering()
-    x.vote()
-    print(x.corr_dict)
-similarity()
+    x.vote(topn=4)
+    return x.corr_dict
+
+tag_data = tag_bank()
+user_data,data_in = loadData(tag_data)
+print(example(tag_data,user_data, 8, 'c:/GoogleNews.bin'))

@@ -35,6 +35,8 @@ class data(object):
                 except KeyError:
                     print('ooops!',item,"does not appear in the google database")
                     self.no_match_tag.append(item)
+        if self.no_match_tag != []:
+            print('missing tags', self.no_match_tag)
 
 
 
@@ -45,6 +47,8 @@ class data(object):
         if self.minimium_model == {}:
             print('minimium model has not been load')
             raise AttributeError
+        elif type(self.minimium_model) != dict:
+            raise TypeError
         else:
             vec = []
             vec_key = []
@@ -66,23 +70,29 @@ class data(object):
         :param topn: optional, default 3, return top n similar user
         :return: dict that contain top n most similar user {key : user, value: suggest users}
         '''
-        user_item_dict = {}
-        for key in self.user_data.keys():
-            vote_array = zeros((self.k,1))
-            for item in self.user_data[key]:
-                vote_array[self.vec_dict[item]] += 1
-            user_item_dict[key] = vote_array/sum(vote_array)
+        if self.vec_dict == {}:
+            print('clustering not completed')
+            raise AttributeError
+        elif type(self.vec_dict) != dict:
+            raise TypeError
+        else:
+            user_item_dict = {}
+            for key in self.user_data.keys():
+                vote_array = zeros((self.k,1))
+                for item in self.user_data[key]:
+                    vote_array[self.vec_dict[item]] += 1
+                user_item_dict[key] = vote_array/sum(vote_array)
 
-        for key1 in self.user_data.keys():
-            dict = {}
-            short_list = []
-            for key2 in self.user_data.keys():
-                if key2!=key1:
-                    dict[key2] = (pearsonr(user_item_dict[key1],user_item_dict[key2])[0])
-            most_similar = sorted(dict, key=dict.get,reverse=True)
-            for i in range(topn):
-                short_list.append(most_similar[i])
-            self.corr_dict[key1] = short_list
+            for key1 in self.user_data.keys():
+                temp_dict = {}
+                short_list = []
+                for key2 in self.user_data.keys():
+                    if key2!=key1:
+                        temp_dict[key2] = (pearsonr(user_item_dict[key1],user_item_dict[key2])[0])
+                most_similar = sorted(temp_dict, key=temp_dict.get,reverse=True)
+                for i in range(topn):
+                    short_list.append(most_similar[i])
+                self.corr_dict[key1] = short_list
 
 
 

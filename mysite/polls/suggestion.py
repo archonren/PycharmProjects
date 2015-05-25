@@ -1,17 +1,34 @@
 __author__ = 'Archon_ren'
-def suggestion_for_user(data, rules):
-    suggestions = {}
-    for user in data.keys():
-        suggestion = set([])
-        for rule in rules:
-            if rules[rule]['prior'].issubset(data[user]):
-                suggestion = suggestion.union(rules[rule]['post'])
-        suggestions[user] = list(suggestion)
-    return suggestions
+from FP_tree import *
 
-def suggestion_for_tag(rules,tag):
-    key = frozenset(tag)
-    if key in rules.keys():
-        return rules[key]['post']
-    else:
-        return {}
+class auto_suggest(object):
+    def __init__(self,user_data):
+        self.user_data = user_data
+
+        self.F = []
+        self.support_data= {}
+
+        self.H = []
+        self.rules = {}
+
+        self.response_data_user = {}
+        self.response_data_tag = {}
+
+    def find_rules(self):
+        self.F,self.support_data = fpgrowth(self.user_data.values(), 0.6)
+        self.H,self.rules = generate_rules(self.F, self.support_data, 0.6)
+
+    def suggestion_for_user(self):
+        for user in self.user_data.keys():
+            suggestion = set([])
+            for rule in self.rules:
+                if self.rules[rule]['prior'].issubset(self.user_data[user]):
+                    suggestion = suggestion.union(self.rules[rule]['post'])
+            self.response_data_user[user] = list(suggestion)
+
+    def suggestion_for_tag(self,tag):
+        key = frozenset(tag)
+        if key in self.rules.keys():
+            return self.rules[key]['post']
+        else:
+            return {}

@@ -32,3 +32,5 @@ class auto_suggest(object):
             return self.rules[key]['post']
         else:
             return {}
+    def flush(self):
+        pass

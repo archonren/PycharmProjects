@@ -2,7 +2,6 @@ from django.http import HttpResponse
 import json,urllib.request
 import data_in,suggestion
 import argparse
-
 def post():
     #url = "http://maps.googleapis.com/maps/api/geocode/json?address=googleplex&sensor=false"
     parser = argparse.ArgumentParser(description='Pass a file url')
@@ -18,4 +17,4 @@ def post():
     a.suggestion_for_user()
     print(a.response_data_user)
     #tag_suggestion = suggestion_for_tag(rules,tag)
-    #return HttpResponse(json.dumps(), content_type="application/json")
+

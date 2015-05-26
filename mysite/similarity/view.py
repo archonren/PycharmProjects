@@ -17,10 +17,10 @@ def example(tag_data,user_data,k,path):
     x.vote(topn=4)
     return x.corr_dict
 
-def main():
+def main(model_path):
     tag_data = tag_bank()
     user_data,data_in = loadData(tag_data)
-    print(example(tag_data,user_data, 8, '/GoogleNews.bin'))
+    print(example(tag_data,user_data, 8, model_path))
     
 if __name__ == '__main__':
-    main()
+    main(argv[1])

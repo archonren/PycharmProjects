@@ -16,3 +16,5 @@ googlenews dataset https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/
 	similarity.py 	class object definition.
 	tag_bag.py 	return a fix set of data
 	user_data.py 	return a fix set of data
+        views.py        run in command line as:
+                        python views.py arg1(path to google model file, *.bin)

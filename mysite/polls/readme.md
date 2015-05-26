@@ -14,7 +14,7 @@ numpy & scipy http://www.numpy.org/
 
 	data_in.py 	always return the same set of result, but it will also test if there is error with the data that take in.
 	suggestion.py 	definition of the class object 
-	urls.py 	
+	urls.py  only functional url is /post/
 	views.py run in commend line as :
 	         python views.py arg1(the url for input)
 

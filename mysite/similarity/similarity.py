@@ -93,23 +93,3 @@ class data(object):
                 for i in range(topn):
                     short_list.append(most_similar[i])
                 self.corr_dict[key1] = short_list
-
-
-
-def example(tag_data,user_data,k,path):
-    '''
-    :param tag_data: tag data (array)
-    :param user_data: user data (dict)
-    :param k: number of cluster
-    :return: dict that tells which tag belongs to which cluster {key: tag, value: cluster id}
-    '''
-
-    x = data(tag_data,user_data,k,path)
-    x.get_minimium_model()
-    x.clustering()
-    x.vote(topn=4)
-    return x.corr_dict
-
-tag_data = tag_bank()
-user_data,data_in = loadData(tag_data)
-print(example(tag_data,user_data, 8, 'c:/GoogleNews.bin'))

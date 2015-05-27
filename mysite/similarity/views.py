@@ -1,7 +1,7 @@
 from similarity import *
 from tag_bag import *
 from user_data import *
-
+from simplejson.compat import StringIO
 
 def example(tag_data,user_data,k,path):
     '''
@@ -20,7 +20,10 @@ def example(tag_data,user_data,k,path):
 def main(model_path):
     tag_data = tag_bank()
     user_data,data_in = loadData(tag_data)
-    print(example(tag_data,user_data, 8, model_path))
+    io = StringIO()
+    response = example(tag_data,user_data, 8, model_path)
+    json.dump(response, io)
+    io.getvalue()
     
 if __name__ == '__main__':
     main(argv[1])

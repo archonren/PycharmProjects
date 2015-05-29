@@ -1,5 +1,4 @@
 import sys
-import json
 
 import data_in    # mock data, currently MetaFilter data dump
 import suggestion # the code making the suggestion
@@ -13,9 +12,9 @@ def post(data):
 
 def compare(input):
     data = data_in.loadData()
-    data["USER"] = input.split(",")
     proc = post(data)
-    print(proc["USER"])    
+    for user in input.split(","):
+        print(proc[user])
 
 if __name__ == '__main__':
     compare(sys.argv[1])

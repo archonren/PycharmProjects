@@ -15,8 +15,8 @@ class auto_suggest(object):
         self.response_data_tag = {}
 
     def find_rules(self):
-        self.F,self.support_data = fpgrowth(self.user_data.values(), 0.6)
-        self.H,self.rules = generate_rules(self.F, self.support_data, 0.6)
+        self.F,self.support_data = fpgrowth(self.user_data.values(), 0.0005)
+        self.H,self.rules = generate_rules(self.F, self.support_data, 0.0005)
 
     def suggestion_for_user(self):
         for user in self.user_data.keys():
@@ -32,4 +32,3 @@ class auto_suggest(object):
             return self.rules[key]['post']
         else:
             return {}
-
